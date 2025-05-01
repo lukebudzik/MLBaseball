@@ -1,12 +1,13 @@
 import matplotlib.pyplot as plt
 import pandas as pd
-import numpy as np
+
 
 STATCAST_DATA = '2024regSeason.csv'
 
-def csv_to_df(csv):
-    df = pd.read_csv(csv)
-    print("number of features in 2024 season dataset:", {df.shape[1]} )
+def csv_to_df():
+    df = pd.read_csv(STATCAST_DATA)
+    print("number of features in 2024 season dataset:", df.shape[1])
+
 
     return df
 
@@ -56,8 +57,30 @@ def visualize_vars(df):
         plt.tight_layout()
         plt.show()
 
+def visualize_individual_var(df, variable):
+    plt.figure(figsize=(10, 6))
+
+    # Plot for categorical or numerical variable
+    if df[variable].dtype == 'object' or df[variable].dtype.name == 'category':
+        df[variable].value_counts().plot(kind='bar', edgecolor='black')
+    else:
+        df[variable].hist(bins=30, edgecolor='black')
+
+    plt.title(f'Histogram of {variable}')
+    plt.xlabel(variable)
+    plt.ylabel('Frequency')
+
+    # Rotate x-axis labels
+    plt.xticks(rotation=45, ha='right')  # 'ha' = horizontal alignment
+
+    plt.tight_layout()  # Prevent label clipping
+    plt.grid(False)
+    plt.show()
+
 if __name__ == "__main__":
-    visualize_vars(csv_to_df(STATCAST_DATA))
+    df = csv_to_df(STATCAST_DATA)
+    visualize_individual_var(df, 'description')
+    visualize_vars(df)
 
 
 

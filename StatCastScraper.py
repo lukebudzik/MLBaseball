@@ -1,7 +1,7 @@
 ##SCRAPER TO GET DATA FROM STATCAST: Fill start date and end date
 
 from pybaseball import statcast, cache
-import pandas as pd
+
 cache.enable()
 # Define the date range
 start_date = "2024-03-28" #mlb 2024 regular season start date
