@@ -1,6 +1,7 @@
 import BaseballDataVisualization1D as bbdata
 import pandas as pd
 import numpy as np
+from sklearn.feature_selection import VarianceThreshold
 
 
 def print_feature_dtypes(df):
@@ -121,7 +122,7 @@ if __name__ == '__main__':
         'batter', 'pitcher', 'on_3b', 'on_2b', 'on_1b', 'fielder_2', 'fielder_3',
         'fielder_4', 'fielder_5', 'fielder_6', 'fielder_7', 'fielder_8', 'fielder_9'
     ]
-    Dropped Features and Groupings (excluding the target feature of this iteration, ):
+    Dropped Features and Groupings (excluding the target feature of this iteration, 'description'):
     leakyFeatures = [
         'hit_distance_sc','events','bb_type','hit_location','hc_x','hc_y',
         'launch_speed','launch_angle','estimated_ba_using_speedangle',
@@ -141,7 +142,6 @@ if __name__ == '__main__':
     redundantFeatures = [
         'game_year','player_name','game_type'
     ]
-    
     
     '''
 
