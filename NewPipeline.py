@@ -87,14 +87,16 @@ def get_feature_names(preprocessor):
         if transformer == 'drop' or name == 'remainder':
             continue
 
-        # Handle Pipeline (like in your case)
+        # Handle pipeline
         if hasattr(transformer, 'named_steps'):
-            last_step = list(transformer.named_steps.items())[-1][1]
+            last_step = list(transformer.named_steps.values())[-1]
 
             if isinstance(last_step, OneHotEncoder):
                 feature_names = last_step.get_feature_names_out(columns)
-            elif hasattr(last_step, 'get_feature_names_out'):  # e.g., HashingEncoder
-                feature_names = last_step.get_feature_names_out()
+            elif isinstance(last_step, HashingEncoder):
+                # HashingEncoder does not retain original names
+                n_components = last_step.n_components
+                feature_names = [f"{name}_hash_{i}" for i in range(n_components)]
             else:
                 feature_names = columns
 
@@ -107,6 +109,7 @@ def get_feature_names(preprocessor):
         output_features.extend(feature_names)
 
     return output_features
+
 
 if __name__ == '__main__':
     df = bbData.csv_to_df()
@@ -164,15 +167,23 @@ if __name__ == '__main__':
 
     print(classification_report(y_test, y_pred))
 
-    print("getting feature importances...:")
+    print("getting feature importances...")
 
     preprocessor = model_pipeline.named_steps['preprocess']
     feature_names = get_feature_names(preprocessor)
-
     importances = model_pipeline.named_steps['model'].feature_importances_
-    sorted_indices = np.argsort(importances)[::-1]  # sort from most to least important
 
-    for idx in sorted_indices[:20]:  # top 20 features
+    # Ensure alignment between importances and feature names
+    if len(importances) != len(feature_names):
+        print(
+            f"⚠️ Warning: mismatch between feature importances ({len(importances)}) and feature names ({len(feature_names)})")
+        feature_names = [f"feature_{i}" for i in range(len(importances))]
+
+    sorted_indices = np.argsort(importances)[::-1]
+
+    print("\nTop 20 features by importance:\n")
+    for idx in sorted_indices[:20]:
         print(f"{feature_names[idx]}: {importances[idx]:.4f}")
+
 
 
