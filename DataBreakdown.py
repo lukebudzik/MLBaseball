@@ -87,6 +87,8 @@ if __name__ == '__main__':
     group_features_by_dtype(df)
     classify_features(df=df)
 
+    print(df['description'].value_counts())
+
     ##SECOND ITERATION OF ADDITIONS: MORE THOROUGH ANALYSIS OF FEATURES
     '''##Information on sets of features before proceeding with analysis/modifications:
     Input Feature sets:

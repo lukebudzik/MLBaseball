@@ -76,7 +76,7 @@ def categorize_columns(df,nan_threshold=0.2,discrete_unique_thresh=15,exclude_su
 
 from sklearn.pipeline import Pipeline
 from sklearn.compose import ColumnTransformer
-from sklearn.preprocessing import OneHotEncoder, StandardScaler
+from sklearn.preprocessing import OneHotEncoder, StandardScaler, KBinsDiscretizer
 from sklearn.impute import SimpleImputer
 from sklearn.base import BaseEstimator, TransformerMixin
 from sklearn.ensemble import RandomForestClassifier
@@ -247,7 +247,7 @@ if __name__ == "__main__":
     y_encoded = label_encoder.fit_transform(y)
 
     X_train, X_test, y_train, y_test = train_test_split(
-        X, y_encoded, test_size=0.2, random_state=42#, stratify=y_encoded
+        X, y_encoded, test_size=0.2, random_state=42, stratify=y_encoded
     )
 
     categorical_transformer = Pipeline(steps=[
@@ -274,10 +274,10 @@ if __name__ == "__main__":
         ('freq', FrequencyEncoder())
     ])
 
-    model_type = 'mlp'
+    model_type = 'rf'
 
     if model_type == 'rf':
-        model = RandomForestClassifier(random_state=42)
+        model = RandomForestClassifier(class_weight= 'balanced',random_state=42)
     elif model_type == 'xgboost':
         from xgboost import XGBClassifier
         model = XGBClassifier(random_state=42, use_label_encoder=False, eval_metric='mlogloss')

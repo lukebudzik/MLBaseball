@@ -45,7 +45,7 @@ categorical_nom_Hash = [
 
 # --- Transformers ---
 continuous_pipeline = Pipeline([
-    ('impute', SimpleImputer(strategy='mean')),
+    ('impute', SimpleImputer(strategy='most_frequent')),
     ('scale', StandardScaler())
 ])
 
@@ -56,7 +56,7 @@ discrete_pipeline = Pipeline([
 
 
 categorical_pipeline_Hash = Pipeline([
-    ('impute', SimpleImputer(strategy='most_frequent')),
+    ('impute', SimpleImputer(strategy='constant')),
     ('hashing', HashingEncoder(n_components=32))  # Try 32, 64, etc.
 ])
 
@@ -123,7 +123,6 @@ if __name__ == '__main__':
         'post_bat_score','post_fld_score','delta_home_win_exp','delta_run_exp',
         'estimated_slg_using_speedangle','delta_pitcher_run_exp','hyper_speed',
         'home_score_diff','bat_score_diff','home_win_exp','bat_win_exp','type',
-
     ]
     deprecatedFeatures = [
         'spin_dir','spin_rate_deprecated', 'break_angle_deprecated','des',

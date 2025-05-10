@@ -37,10 +37,10 @@ if __name__ == '__main__':
                'post_home_score','post_bat_score','post_fld_score','delta_home_win_exp',
                'delta_run_exp','estimated_slg_using_speedangle','delta_pitcher_run_exp',
                'hyper_speed','home_score_diff','bat_score_diff','home_win_exp',
-               'bat_win_exp','age_pit_legacy','age_bat_legacy','n_thruorder_pitcher','type']
+               'bat_win_exp','age_pit_legacy','age_bat_legacy','type']
     inputData = data.drop(columns=columns)
     print(f'input data columns:', inputData.columns)
-    #plot_target_vs_features(data, 'description', inputData)
+    plot_target_vs_features(data, 'description', inputData)
 
 
 
